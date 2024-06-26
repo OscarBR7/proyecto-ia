@@ -32,17 +32,17 @@ def escaneo():
           if y2 < 0: y2 = 0
 
           #Clase que detecto
-          clase = int(box.clase[0])
+          cls = int(box.cls[0])
           #Confidencia
           conf = math.ceil(box.conf[0])
 
           if conf > 0.5:
             #Metal
-            if clase == 0:
+            if cls == 0:
               #Dibujar rectangulo delimitador
               cv2.rectangle(frame_show, (x1, y1), (x2, y2), (255, 255, 0), 2)
               #Agregar texto
-              text = f'{nombre_clase[clase]} {int(conf)*100}%'
+              text = f'{nombre_clase[cls]} {int(conf)*100}%'
               sizetext = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, 1, 2)
               dim = sizetext[0]
               baseline = sizetext[1]
@@ -50,11 +50,11 @@ def escaneo():
               cv2.rectangle(frame_show, (x1,y1 - dim[1] - baseline), (x1 + dim[0], y1 + baseline), (0,0,0), cv2.FILLED)
               cv2.putText(frame_show, text, (x1, y1 - 5), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 0), 2)
             #Vidrio
-            if clase == 1:
+            if cls == 1:
               #Dibujar rectangulo delimitador
               cv2.rectangle(frame_show, (x1, y1), (x2, y2), (255, 255, 255), 2)
               #Agregar texto
-              text = f'{nombre_clase[clase]} {int(conf)*100}%'
+              text = f'{nombre_clase[cls]} {int(conf)*100}%'
               sizetext = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, 1, 2)
               dim = sizetext[0]
               baseline = sizetext[1]
@@ -62,11 +62,11 @@ def escaneo():
               cv2.rectangle(frame_show, (x1,y1 - dim[1] - baseline), (x1 + dim[0], y1 + baseline), (0,0,0), cv2.FILLED)
               cv2.putText(frame_show, text, (x1, y1 - 5), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
             #Plastico
-            if clase == 2:
+            if cls == 2:
               #Dibujar rectangulo delimitador
               cv2.rectangle(frame_show, (x1, y1), (x2, y2), (0, 0, 255), 2)
               #Agregar texto
-              text = f'{nombre_clase[clase]} {int(conf)*100}%'
+              text = f'{nombre_clase[cls]} {int(conf)*100}%'
               sizetext = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, 1, 2)
               dim = sizetext[0]
               baseline = sizetext[1]
@@ -74,11 +74,11 @@ def escaneo():
               cv2.rectangle(frame_show, (x1,y1 - dim[1] - baseline), (x1 + dim[0], y1 + baseline), (0,0,0), cv2.FILLED)
               cv2.putText(frame_show, text, (x1, y1 - 5), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
             #Carton
-            if clase == 3:
+            if cls == 3:
               #Dibujar rectangulo delimitador
               cv2.rectangle(frame_show, (x1, y1), (x2, y2), (150, 150, 150), 2)
               #Agregar texto
-              text = f'{nombre_clase[clase]} {int(conf)*100}%'
+              text = f'{nombre_clase[cls]} {int(conf)*100}%'
               sizetext = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, 1, 2)
               dim = sizetext[0]
               baseline = sizetext[1]
@@ -86,11 +86,11 @@ def escaneo():
               cv2.rectangle(frame_show, (x1,y1 - dim[1] - baseline), (x1 + dim[0], y1 + baseline), (0,0,0), cv2.FILLED)
               cv2.putText(frame_show, text, (x1, y1 - 5), cv2.FONT_HERSHEY_SIMPLEX, 1, (150, 150, 150), 2)
             #Medico
-            if clase == 4:
+            if cls == 4:
               #Dibujar rectangulo delimitador
               cv2.rectangle(frame_show, (x1, y1), (x2, y2), (255, 0, 0), 2)
               #Agregar texto
-              text = f'{nombre_clase[clase]} {int(conf)*100}%'
+              text = f'{nombre_clase[cls]} {int(conf)*100}%'
               sizetext = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, 1, 2)
               dim = sizetext[0]
               baseline = sizetext[1]
