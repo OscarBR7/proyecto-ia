@@ -7,9 +7,28 @@ import numpy as np
 from ultralytics import YOLO
 import math
 
+#Mostrar imagenes
+def imagenes(img):
+  img = img
+
+  #Detección de imagen como una matriz de numpy
+  img = np.array(img, dtype='unit8')
+  img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
+  img = Image.fromarray(img)
+
+  img_ = ImageTk.PhotoImage(image=img)
+  label_imagen.configure(image=img_)
+  label_imagen.image = img_
+
+
+
+
 #Función de escaneo
 def escaneo():
-  
+  global label_imagen
+  #Interfaz
+  label_imagen = Label(pantalla)
+  label_imagen.place(x=75, y=260)
   #Leer la videocaptura
   if captura is not None:#Verificar si la captura no viene vacía
     ret, frame = captura.read() #Si no viene vacía se leen los frames de la captura por medio del metodo read
@@ -49,6 +68,9 @@ def escaneo():
               #Rectangulo
               cv2.rectangle(frame_show, (x1,y1 - dim[1] - baseline), (x1 + dim[0], y1 + baseline), (0,0,0), cv2.FILLED)
               cv2.putText(frame_show, text, (x1, y1 - 5), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 0), 2)
+
+              #Imagen
+              imagenes(imagen_metal)
             #Vidrio
             if cls == 1:
               #Dibujar rectangulo delimitador
@@ -61,6 +83,9 @@ def escaneo():
               #Rectangulo
               cv2.rectangle(frame_show, (x1,y1 - dim[1] - baseline), (x1 + dim[0], y1 + baseline), (0,0,0), cv2.FILLED)
               cv2.putText(frame_show, text, (x1, y1 - 5), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+              
+              #Imagen
+              imagenes(imagen_vidrio)
             #Plastico
             if cls == 2:
               #Dibujar rectangulo delimitador
@@ -73,6 +98,9 @@ def escaneo():
               #Rectangulo
               cv2.rectangle(frame_show, (x1,y1 - dim[1] - baseline), (x1 + dim[0], y1 + baseline), (0,0,0), cv2.FILLED)
               cv2.putText(frame_show, text, (x1, y1 - 5), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+              
+              #Imagen
+              imagenes(imagen_plastico)
             #Carton
             if cls == 3:
               #Dibujar rectangulo delimitador
@@ -85,6 +113,9 @@ def escaneo():
               #Rectangulo
               cv2.rectangle(frame_show, (x1,y1 - dim[1] - baseline), (x1 + dim[0], y1 + baseline), (0,0,0), cv2.FILLED)
               cv2.putText(frame_show, text, (x1, y1 - 5), cv2.FONT_HERSHEY_SIMPLEX, 1, (150, 150, 150), 2)
+              
+              #Imagen
+              imagenes(imagen_carton)
             #Medico
             if cls == 4:
               #Dibujar rectangulo delimitador
@@ -97,6 +128,9 @@ def escaneo():
               #Rectangulo
               cv2.rectangle(frame_show, (x1,y1 - dim[1] - baseline), (x1 + dim[0], y1 + baseline), (0,0,0), cv2.FILLED)
               cv2.putText(frame_show, text, (x1, y1 - 5), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2)
+
+              #Imagen
+              imagenes(imagen_medico)
               
 
 
@@ -116,7 +150,7 @@ def escaneo():
 
 def ventana_principal():
   global modelo, nombre_clase, imagen_metal, imagen_vidrio, imagen_plastico, imagen_carton, imagen_medico
-  global captura, label_video
+  global captura, label_video, pantalla
   #Se declaran de manera global, para poder utilizarlas en otras funciones
   #Ventana principal
   pantalla = Tk()#Se crea la instancia de TK
