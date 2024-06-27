@@ -155,10 +155,10 @@ def ventana_principal():
   #Ventana principal
   pantalla = Tk()#Se crea la instancia de TK
   pantalla.title("Proyecto de Inteligencia Articial")#Se le asigna un titulo a la ventana
-  pantalla.geometry("1280x720")#Se asigna la dimensión de la ventana
+  pantalla.geometry("996x646")#Se asigna la dimensión de la ventana
 
   #Fondo de la ventana
-  imagen_fondo = PhotoImage(file="setUp/Canva.png") #Asignación de la imagen a la variable imagen_fondo
+  imagen_fondo = PhotoImage(file="setUp/Canva_copia.png") #Asignación de la imagen a la variable imagen_fondo
   backgrround = Label(image=imagen_fondo) #Asinganción de la imagen de fondo a la variable background
   backgrround.place(x=0, y=0, relwidth=1, relheight=1)
 
