@@ -12,7 +12,7 @@ def imagenes(img):
   img = img
 
   #Detección de imagen como una matriz de numpy
-  img = np.array(img, dtype='unit8')
+  img = np.array(img, dtype='uint8')
   img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
   img = Image.fromarray(img)
 
