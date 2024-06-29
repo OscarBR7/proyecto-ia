@@ -177,7 +177,7 @@ def ventana_principal():
 
   #Modelo
   modelo = YOLO("Modelos/best.pt") #Se declara la varibale modelo, a la cual se le asinga un modelo
-  #preentrenado y con la clase YOLO se le pasa la ruta para cargar el modelo
+  #preentrenado y con la clase YOLO se le pasa la ruta para cargar el modelo YOLO a traves de un archivo
 
   #Clases
   nombre_clase = ['Metal', 'Vidrio', 'Plastico', 'Carton', 'Medico'] #Se declara la variable nombre_clase
