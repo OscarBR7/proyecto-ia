@@ -1,73 +1,85 @@
 #Librerías
 from tkinter import *
-from PIL import Image, ImageTk
-import imutils
-import cv2
-import numpy as np
-from ultralytics import YOLO
-import math
+from PIL import Image, ImageTk #Liberería para interfaz gráfica y manejo de imagenes
+import imutils #Librería que nos ayuda en el procesamiento de imagenes
+import cv2 #Librería que nos ayuda para captura de video y procesamiento de video
+import numpy as np #Librería que nos ayuda para manejo de matrices
+from ultralytics import YOLO #Librería que nos ayuda para la detección de objetos
+import math #Librería que nos ayuda para funciones matemáticas
 
 #Mostrar imagenes
 def imagenes(img):
   img = img
 
   #Detección de imagen como una matriz de numpy
-  img = np.array(img, dtype='uint8')
-  img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
-  img = Image.fromarray(img)
+  img = np.array(img, dtype='uint8') # Sentencia para convertir imagen a una matriz de numpy
+  img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR) #Se convierte de colores RGB a BGR
+  img = Image.fromarray(img) #Convertir la matriz de numpy a imagen PIL
 
-  img_ = ImageTk.PhotoImage(image=img)
-  label_imagen.configure(image=img_)
-  label_imagen.image = img_
+  img_ = ImageTk.PhotoImage(image=img) #Conversión de la imagen PIL a formato compatible con Tkinter
+  label_imagen.configure(image=img_) #Configurar la imagen en el label de la ventana de Tkinter
+  label_imagen.image = img_ #Se matiene la referencia a dicha imagen para evitar que se elimine la imagen
 
 
 
 
 #Función de escaneo
 def escaneo():
-  global label_imagen
+  global label_imagen #Variable global para la captura de la imagen
   #Interfaz
-  label_imagen = Label(pantalla)
-  label_imagen.place(x=75, y=260)
+  label_imagen = Label(pantalla) #Creación de label para mostrar la imagenes en la interfaz
+  label_imagen.place(x=75, y=260) #Colocación del label para que aparezcan las imagenes en la interfaz
   #Leer la videocaptura
   if captura is not None:#Verificar si la captura no viene vacía
     ret, frame = captura.read() #Si no viene vacía se leen los frames de la captura por medio del metodo read
-    frame_show = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    frame_show = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB) #conversión de colores de la imagen de BGR a RGB
     if ret == True: #Verificar si se realizo correctamente la lectura de los frames
       
-      resultados = modelo(frame, stream=True, verbose=False)
+      resultados = modelo(frame, stream=True, verbose=False) #Utilización del modelo para la 
+      #detección de los objetos
       for res in resultados:
         #Box
-        boxes = res.boxes
+        boxes = res.boxes #Obtención de las cajas delimitadas de los objetos detectados
         for box in boxes:
           #Delimitadores de los boxes
-          x1, y1, x2, y2 = box.xyxy[0]
-          x1, y1, x2, y2 = int(x1), int(y1), int(x2), int(y2)
+          x1, y1, x2, y2 = box.xyxy[0] #Se establecen las coordenadas de las cajas delimitadoras
+          x1, y1, x2, y2 = int(x1), int(y1), int(x2), int(y2) #Se convierten las coordenadas a enteros
 
           #Solución de error cuando el objeto esta en los límites de la captura
+          #Se ajustan las coordenadas de las delimitaciones de las cajas si 
+          # estan fuera de los límites de captura
           if x1 < 0: x1 = 0
           if y1 < 0: y1 = 0
           if x2 < 0: x2 = 0
           if y2 < 0: y2 = 0
 
           #Clase que detecto
-          cls = int(box.cls[0])
+          cls = int(box.cls[0]) #Se establece la clase del objeto que se detecto
           #Confidencia
-          conf = math.ceil(box.conf[0])
+          conf = math.ceil(box.conf[0]) #Se establece el número de confianza 
+          #que se obtuvo al detectar el objeto
 
-          if conf > 0.5:
+          if conf > 0.5: #Si el valor de la confianza es mayor a 0.5 se prosigue
+            #con su clasificación, si no, se deshecha la lectura
             #Metal
             if cls == 0:
               #Dibujar rectangulo delimitador
-              cv2.rectangle(frame_show, (x1, y1), (x2, y2), (255, 255, 0), 2)
+              cv2.rectangle(frame_show, (x1, y1), (x2, y2), (255, 255, 0), 2) #se dibuja un rectangulo
+              #Alrededor del objeto detectado y se le asigna un color dependiendo de que objeto se
+              #detecto en este caso es el amarillo
               #Agregar texto
-              text = f'{nombre_clase[cls]} {int(conf)*100}%'
-              sizetext = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, 1, 2)
-              dim = sizetext[0]
-              baseline = sizetext[1]
+              text = f'{nombre_clase[cls]} {int(conf)*100}%' #Se crea el texto que se mostrara al rededor
+              #del rectangulo creado para y también el porcentaje de confianza con el que se detecto 
+              sizetext = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, 1, 2) #Se le asigna un tamaño
+              #al texto que se quiere mostrar además de la tipografía que tomara
+              # Obtener dimensiones del texto y la línea base
+              dim = sizetext[0] # Tamaño del texto (ancho y alto)
+              baseline = sizetext[1] # Línea base del texto
               #Rectangulo
               cv2.rectangle(frame_show, (x1,y1 - dim[1] - baseline), (x1 + dim[0], y1 + baseline), (0,0,0), cv2.FILLED)
+              # Dibujar un rectángulo negro para el fondo del texto
               cv2.putText(frame_show, text, (x1, y1 - 5), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 0), 2)
+              # Dibujar el texto sobre el rectángulo
 
               #Imagen
               imagenes(imagen_metal)
@@ -138,15 +150,16 @@ def escaneo():
       frame_show = imutils.resize(frame_show, width=640)
 
       #Converción de video al formato pi
-      im = Image.fromarray(frame_show)
-      img = ImageTk.PhotoImage(image=im)
+      im = Image.fromarray(frame_show)  # Convercion de una matriz de numpy a imagen de tipo PIL
+      img = ImageTk.PhotoImage(image=im) # Converción de la imagen PIL a formato que acepte tkinter
       
       #Mostar en la ventana de Tkinter
-      label_video.configure(image=img)
-      label_video.image = img
-      label_video.after(10, escaneo)
+      label_video.configure(image=img) #Configurar la imagen en el label de la ventana de Tkinter
+      label_video.image = img #Se matiene la referencia a dicha imagen para evitar que se elimine la imagen
+      
+      label_video.after(10, escaneo) # Repetir función del escaneo cada 10 milisegundos
     else:
-      captura.release()
+      captura.release() # romper con la captura de video si hay un error
 
 def ventana_principal():
   global modelo, nombre_clase, imagen_metal, imagen_vidrio, imagen_plastico, imagen_carton, imagen_medico
