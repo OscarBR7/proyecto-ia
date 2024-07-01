@@ -14,8 +14,8 @@ def imagenes(img):
   #Detección de imagen como una matriz de numpy
   img = np.array(img, dtype='uint8') # Sentencia para convertir imagen a una matriz de numpy
   img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR) #Se convierte de colores RGB a BGR
-  img = Image.fromarray(img) #Convertir la matriz de numpy a imagen PIL
-
+  img = Image.fromarray(img) #Convertir la matriz de numpy a imagen PIL    
+  
   img_ = ImageTk.PhotoImage(image=img) #Conversión de la imagen PIL a formato compatible con Tkinter
   label_imagen.configure(image=img_) #Configurar la imagen en el label de la ventana de Tkinter
   label_imagen.image = img_ #Se matiene la referencia a dicha imagen para evitar que se elimine la imagen
